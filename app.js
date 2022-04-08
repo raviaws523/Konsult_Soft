@@ -1,29 +1,37 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const sequelize = require('sequelize');
-const path = require('path');
-const ejs = require('ejs');
-
-const userRoutes = require('./routes/user');
-
-
+const cors = require('cors');
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+const corsOptions = {
+  origin: "http://localhost:3002"
+}
+
+app.use(cors(corsOptions));
+app.use(express.json());
+
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-app.set('view engine', 'ejs');
-app.set('views', 'views');
 
 
-app.get('/', (req, res) => {
-    res.render('login');
+
+
+require('./routes/auth.routes')(app);
+require('./routes/user.routes')(app);
+
+app.get('/', (req, res)=> {
+  console.log(req.body);
+    res.json({message: "Welcome to my page"});
 });
 
-app.use(userRoutes);
 
 
 
-app.listen(3000, () => {
-    console.log("Server is up and running on port 3000");
+
+
+app.listen(process.env.PORT || 5001, () => {
+    console.log("Server is up and running on port 5001");
 });

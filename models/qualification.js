@@ -10,11 +10,36 @@ module.exports = (sequelize, DataTypes) => {
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            this.belongsTo(models.User)
+            this.belongsTo(models.User, {
+                foreignKey: 'userId',
+                constraints: true,
+                onDelete: 'CASCADE'
+            });
         }
     }
     Qualification.init({
-        id: DataTypes.INTEGER
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        type: {
+            type: DataTypes.STRING,
+        },
+        institution: {
+            type: DataTypes.STRING,
+        },
+        session_date: {
+            type: DataTypes.INTEGER,
+        },
+        userId: {
+            type: DataTypes.INTEGER,
+            refrences: {
+                model: 'Users',
+                key: 'id'
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'CASCADE'
+        }
     }, {
         sequelize,
         modelName: 'Qualification',

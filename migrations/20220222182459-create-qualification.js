@@ -20,6 +20,15 @@ module.exports = {
             },
             session_date: {
                 type: Sequelize.INTEGER,
+            },
+            userId: {
+                type: Sequelize.INTEGER,
+                references: {
+                    model: 'Users', // name of Source model
+                    key: 'id' // key in Source model that we're referencing
+                },
+                onUpdate: 'CASCADE',
+                onDelete: 'CASCADE'
             }
         });
     },
